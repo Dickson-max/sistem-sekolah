@@ -29,22 +29,25 @@ class Router
             $pattern = '#^' . $pattern . '$#';
 
             if (preg_match($pattern, $uri, $matches)) {
-              require_once './app/controllers/' . $route['controller'] . '.php';
+              require_once '../app/controllers/' . $route['controller'] . '.php';
 
               array_shift($matches); // Remove the full match
               $controllerClass = 'App\\Controllers\\' . $route['controller'];
               $controller = new $controllerClass();
 
               $function = $route['function'];
-              $controller->$function();
+              call_user_func_array([$controller, $function], $matches);
 
               return;
         }
 
-            
-    
+        
+        
+        }
+        http_response_code(404);
+        echo '<h1>404 - Page Not Found</h1>';
 
         
-
+        }
 
 }
